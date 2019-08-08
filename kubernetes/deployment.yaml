@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: openldap
+  name: openldap
+  namespace: openldap
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      containers:
+      - env:
+        - name: ORGANISATION_NAME
+          value: Vkn9 Ltd
+        image: openldap-alpine
+        name: openldap
+        ports:
+        - containerPort: 636
+        volumeMounts:
+        - mountPath: /var/lib/openldap/openldap-data
+          name: openldap-data
+      restartPolicy: Always
+      volumes:
+      - name: openldap-data
+        persistentVolumeClaim:
+          claimName: openldap-data
